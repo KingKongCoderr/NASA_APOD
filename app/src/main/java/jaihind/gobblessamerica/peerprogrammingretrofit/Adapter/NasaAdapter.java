@@ -45,7 +45,7 @@ public List<Nasa> list;
         holder.mdate_tv.setText(obj.getDate());
        // String url=obj.getHdurl();
         //Picasso.with(context).load(url).resize(300,300).into(holder.mimage_view);
-        Glide.with(context).load(obj.getHdurl()).into(holder.mimage_view);
+        Glide.with(context).load(obj.getHdurl()).placeholder(R.drawable.loading).into(holder.mimage_view);
         holder.mname_tv.setText(obj.getTitle());
        /* holder.mname_tv.setOnClickListener(new View.OnClickListener() {
             @Override

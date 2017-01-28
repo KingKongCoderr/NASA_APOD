@@ -27,6 +27,8 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
     public  SharedPreferences.Editor meditor;
 
+    String minimum_date="",maximum_date="";
 
     Calendar c=Calendar.getInstance();
 
@@ -84,22 +87,32 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             mrealm.init(getApplicationContext());
             mrealm= Realm.getDefaultInstance();
 
-        long time=Calendar.getInstance().getTimeInMillis();
-        long time2=Calendar.getInstance().getTimeInMillis();
-        long time3=Calendar.getInstance().getTimeInMillis();
+       SimpleDateFormat format= new SimpleDateFormat("yyyy-mm-dd");
+
+        long milli,milli1;
+        try {
+            Date dt=  format.parse("2017-01-27");
+             milli= dt.getTime();
+             milli1= Calendar.getInstance().getTimeInMillis();
+            System.out.println(milli1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
         msharedPreferences=getPreferences(Context.MODE_PRIVATE);
            meditor=msharedPreferences.edit();
             meditor.putLong("mindate",System.currentTimeMillis());
+
+
            // meditor.commit();
             Log.d("time",msharedPreferences.getLong("mindate",(long)0)+"");
             mNetworkManager=new NetworkManager();
 
             shouldFetch=msharedPreferences.getBoolean("shouldfetch",true);
-            stored_date=   msharedPreferences.getInt("date",0);
+            stored_date=   msharedPreferences.getInt("date",day);
             todays_date= day;
-            min_date=Math.abs(stored_date-todays_date);
+
 
             //min_date=1;
             nasa_images=new ArrayList<>();
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                 mrecyclerView.setHasFixedSize(true);
             }
 
-        crud();
+        //crud();
 
             if(!((todays_date-stored_date)==0)) {
                 //Log.d("Fetch","Inside fetch");
@@ -123,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                 }
                 else{
 
-                    getImages();
+                   // getImages();
+                 // getlistdatafromdb();
+                  callListFrag();
                 }
 
             }
@@ -189,6 +204,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         RealmResults<Nasa> itr= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);
 
 
+        maximum_date=itr.get(0).getDate();
+        minimum_date=itr.get(itr.size()-1).getDate();
+        int size=itr.size();
 
         try {
         for (Nasa nasa : itr) {
@@ -223,13 +241,13 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     Log.d("Inside","inside response");
                 mrealm.beginTransaction();
                 Nasa obj=response.body();
-
+/*
                 Nasa obj1=new Nasa("asdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                         "http://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg",
                         "Dummy data 1","2017-01-25");
                 Nasa obj2= new Nasa("io[[n[[bpihhhhhhhhhhhhhhppppppoooooooooooooooooooooooooooooooooooooooooooooooooooohoih",
                         "https://s3-us-west-1.amazonaws.com/powr/defaults/image-slider2.jpg",
-                        "Dummy Data 2","2017-01-24");
+                        "Dummy Data 2","2017-01-24");*/
 
                 Nasa obj3=mrealm.createObject(Nasa.class);
                 obj3.setExplanation(obj.getExplanation());obj3.setHdurl(obj.getHdurl());obj3.setTitle(obj.getTitle());obj3.setDate(obj.getDate());
@@ -238,7 +256,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                 int date= c.get(Calendar.DAY_OF_MONTH);
                 meditor.putInt("date",date);
                 meditor.commit();
-                getImages();
+               // getImages();
+                callListFrag();
 
 
 
@@ -286,7 +305,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
     private void callDateFrag() {
         Intent calendar_intent=new Intent(this,CalendarActivity.class);
-        calendar_intent.putExtra("minimum_date",min_date);
+        calendar_intent.putExtra("minimum_date",minimum_date);
+        calendar_intent.putExtra("maximum_date",maximum_date);
+
         startActivityForResult(calendar_intent,1);
 
         /*mdatepicker.init(year, month-1, day, new DatePicker.OnDateChangedListener() {

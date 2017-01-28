@@ -6,22 +6,37 @@ import android.os.Bundle;
 import android.widget.CalendarView;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
 CalendarView mcalendarView;
-    int min_date=0;
+    String minimum_date="",maximum_date="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         mcalendarView=(CalendarView)findViewById(R.id.calendarView);
-        min_date=getIntent().getIntExtra("minimum_date",0);
-        long decrease_time= (java.util.Calendar.getInstance().getTimeInMillis()-((min_date+1)*86400000));
+        minimum_date=getIntent().getStringExtra("minimum_date");
+        maximum_date=getIntent().getStringExtra("maximum_date");
+        SimpleDateFormat format= new SimpleDateFormat("yyyy-mm-dd");
+        long milli=0,milli1=0;
+        try {
+            Date dt=  format.parse(minimum_date);
+            Date dt1= format.parse(maximum_date);
+            milli= dt.getTime();
+            milli1= dt1.getTime();
+            //System.out.println(milli1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //long decrease_time= (java.util.Calendar.getInstance().getTimeInMillis()-((min_date)*86400000));
        final Intent date_intent=new Intent(this,MainActivity.class);
-        mcalendarView.setMinDate(decrease_time);
-        mcalendarView.setMaxDate(java.util.Calendar.getInstance().getTimeInMillis());
+        mcalendarView.setMinDate(milli);
+        mcalendarView.setMaxDate(milli1);
 
         mcalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
