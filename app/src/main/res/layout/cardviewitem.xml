@@ -31,6 +31,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/copyright_tv"
+                android:padding="4dp"
+                android:layout_below="@id/card_iv"
+                android:layout_alignParentLeft="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/date_tv"
                 android:padding="4dp"
                 android:layout_below="@id/card_iv"

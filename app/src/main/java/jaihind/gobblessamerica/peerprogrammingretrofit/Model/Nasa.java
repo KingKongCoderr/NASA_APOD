@@ -23,11 +23,12 @@ public class Nasa extends RealmObject{
     public Nasa(){
 
     }
-    public Nasa(String explanation, String hdurl, String title,String date) {
+    public Nasa(String explanation, String hdurl, String title,String date,String copyright) {
         this.explanation = explanation;
         this.hdurl = hdurl;
         this.title = title;
         this.date=date;
+        this.copyright=copyright;
     }
 
     public String getCopyright() {

@@ -46,6 +46,7 @@ public List<Nasa> list;
         final Nasa obj=list.get(position);
 
         holder.mdate_tv.setText(obj.getDate());
+        holder.mcopyright_tv.setText(obj.getCopyright());
        // String url=obj.getHdurl();
         //Picasso.with(context).load(url).resize(300,300).into(holder.mimage_view);
         Glide.with(context).load(obj.getHdurl()).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().placeholder(R.drawable.loading).error(R.drawable.notfound).into(holder.mimage_view);
@@ -77,7 +78,7 @@ public List<Nasa> list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView mdate_tv,mname_tv;
+        private TextView mdate_tv,mname_tv,mcopyright_tv;
         private ImageView mimage_view;
 
         public ViewHolder(View itemView) {
@@ -85,6 +86,7 @@ public List<Nasa> list;
             mdate_tv = (TextView)itemView.findViewById(R.id.date_tv);
             mname_tv = (TextView)itemView.findViewById(R.id.card_tv);
             mimage_view = (ImageView)itemView.findViewById(R.id.card_iv);
+            mcopyright_tv=(TextView)itemView.findViewById(R.id.copyright_tv);
         }
 
     }

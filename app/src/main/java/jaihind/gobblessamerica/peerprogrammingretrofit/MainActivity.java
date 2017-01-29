@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public int todays_date=0;
     public int stored_date=0;
     public int min_date=0;
-    public boolean isInstanceThere=false,shouldFetch=true,shouldDummy=true;
+    public boolean isInstanceThere=false,shouldFetch=true;
+    //shouldDummy=true;
 
 
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
             shouldFetch = msharedPreferences.getBoolean("shouldfetch", true);
             stored_date = msharedPreferences.getInt("date", day);
-            shouldDummy = msharedPreferences.getBoolean("dummy", true);
+            //shouldDummy = msharedPreferences.getBoolean("dummy", true);
             todays_date = day;
 
 
@@ -132,9 +133,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             mrecyclerView.setLayoutManager(mlayoutManager);
 
 
-            if (shouldDummy) {
+           /* if (shouldDummy) {
                 crud();
-            }
+            }*/
 
 
             if (!((todays_date - stored_date) == 0)) {
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
     }
 
-    private void crud() {
+    /*private void crud() {
         mrealm.beginTransaction();
         //RealmResults<Nasa> lessthan= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);
 
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         mrealm.commitTransaction();
         meditor.putBoolean("dummy",false);
         meditor.commit();
-    }
+    }*/
 
     public void getImages(){
         mnasaAdapter=new NasaAdapter(getdatafromdb(year,month,day),this);
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                 if(Integer.parseInt(dates[0])==lyear && Integer.parseInt(dates[1])==(lmonth)
                         && Integer.parseInt(dates[2])==lday){
                     Log.d("yahoo","inside if");
-                teams_list.add(new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate()));}
+                teams_list.add(new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright()));}
                 else{
 
                 }
@@ -248,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         try {
         for (Nasa nasa : itr) {
         Log.d("inside list for",""+nasa.getTitle());
-        teams_list.add(new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate()));
+        teams_list.add(new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright()));
         }
         } catch (Exception e) {
         e.printStackTrace();
@@ -282,7 +283,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
 
                 Nasa obj3=mrealm.createObject(Nasa.class);
-                obj3.setExplanation(obj.getExplanation());obj3.setHdurl(obj.getHdurl());obj3.setTitle(obj.getTitle());obj3.setDate(obj.getDate());
+                obj3.setExplanation(obj.getExplanation());
+                obj3.setHdurl(obj.getHdurl());
+                obj3.setTitle(obj.getTitle());
+                obj3.setDate(obj.getDate());
+                obj3.setCopyright(obj.getCopyright());
+                String copyri=obj.getCopyright();
                 mrealm.commitTransaction();
                 meditor.putBoolean("shouldfetch",false);
                 int date= c.get(Calendar.DAY_OF_MONTH);
