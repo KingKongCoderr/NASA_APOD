@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.nfc.tech.NfcA;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.security.AccessController.getContext;
+
 
 public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public int todays_date=0;
     public int stored_date=0;
     public int min_date=0;
-    public boolean isInstanceThere=false,shouldFetch=true;
+    public boolean isInstanceThere=false,shouldFetch=true,shouldDummy=true;
 
 
 
@@ -86,62 +89,80 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             setContentView(R.layout.activity_main);
             mrealm.init(getApplicationContext());
             mrealm= Realm.getDefaultInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 
-       SimpleDateFormat format= new SimpleDateFormat("yyyy-mm-dd");
-
-        long milli,milli1;
-        try {
-            Date dt=  format.parse("2017-01-27");
-             milli= dt.getTime();
-             milli1= Calendar.getInstance().getTimeInMillis();
-            System.out.println(milli1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        msharedPreferences=getPreferences(Context.MODE_PRIVATE);
-           meditor=msharedPreferences.edit();
-            meditor.putLong("mindate",System.currentTimeMillis());
+            long milli, milli1;
+            try {
+                Date dt = format.parse("2017-01-27");
+                milli = dt.getTime();
+                milli1 = Calendar.getInstance().getTimeInMillis();
+                System.out.println(milli1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
 
-           // meditor.commit();
-            Log.d("time",msharedPreferences.getLong("mindate",(long)0)+"");
-            mNetworkManager=new NetworkManager();
 
-            shouldFetch=msharedPreferences.getBoolean("shouldfetch",true);
-            stored_date=   msharedPreferences.getInt("date",day);
-            todays_date= day;
+            msharedPreferences = getPreferences(Context.MODE_PRIVATE);
+            meditor = msharedPreferences.edit();
+            meditor.putLong("mindate", System.currentTimeMillis());
+
+
+            // meditor.commit();
+            Log.d("time", msharedPreferences.getLong("mindate", (long) 0) + "");
+            mNetworkManager = new NetworkManager();
+
+            shouldFetch = msharedPreferences.getBoolean("shouldfetch", true);
+            stored_date = msharedPreferences.getInt("date", day);
+            shouldDummy = msharedPreferences.getBoolean("dummy", true);
+            todays_date = day;
 
 
             //min_date=1;
-            nasa_images=new ArrayList<>();
-            if(savedInstanceState == null) {
-                isInstanceThere=true;
+            nasa_images = new ArrayList<>();
+            if (savedInstanceState == null) {
+                isInstanceThere = true;
             }
 
-            mrecyclerView=(RecyclerView)findViewById(R.id.recycler_view);
+            mrecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             if (mrecyclerView != null) {
                 mrecyclerView.setHasFixedSize(true);
             }
+            mlayoutManager = new LinearLayoutManager(this);
+            mrecyclerView.setLayoutManager(mlayoutManager);
 
-        //crud();
 
-            if(!((todays_date-stored_date)==0)) {
+            if (shouldDummy) {
+                crud();
+            }
+
+
+            if (!((todays_date - stored_date) == 0)) {
                 //Log.d("Fetch","Inside fetch");
+                if (isOnline()) {
                     fetchData();
-            }else {
-              if(shouldFetch){
-                    fetchData();
+                }else {
+                    Toast.makeText(this, "No network", Toast.LENGTH_SHORT).show();
                 }
-                else{
 
-                   // getImages();
-                 // getlistdatafromdb();
-                  callListFrag();
+            } else {
+                if (shouldFetch) {
+                    if (isOnline()) {
+                        fetchData();
+                    }
+                    else {
+                        Toast.makeText(this, "No network", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+
+                    // getImages();
+                    // getlistdatafromdb();
+                    callListFrag();
+                    //callListFrag();
                 }
 
             }
+
 
 
 
@@ -151,20 +172,36 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
     private void crud() {
         mrealm.beginTransaction();
-        RealmResults<Nasa> lessthan= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);
+        //RealmResults<Nasa> lessthan= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);
 
-        for (int i=0;i<lessthan.size();i++){
-            Nasa obj= lessthan.get(i);
-           String title=obj.getTitle();
+        Nasa obj1[]=new Nasa[]{new Nasa("asdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "http://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg",
+                "Dummy data 1","2017-01-25"),new Nasa("io[[n[[bpihhhhhhhhhhhhhhppppppoooooooooooooooooooooooooooooooooooooooooooooooooooohoih",
+                "https://s3-us-west-1.amazonaws.com/powr/defaults/image-slider2.jpg",
+                "Dummy Data 2","2017-01-24"), new Nasa("io[[n[[bpihhhhhhhhhhhhhhppppppoooooooooooooooooooooooooooooooooooooooooooooooooooohoih",
+                "http://www.falconflooringct.com/product_images/5840f3ba7c84a.jpg",
+                "Dummy Data 3","2017-01-21")};
+
+
+        for (int i=0;i<obj1.length;i++){
+            Nasa obj= mrealm.createObject(Nasa.class);
+            obj.setExplanation(obj1[i].getExplanation());
+            obj.setHdurl(obj1[i].getHdurl());
+            obj.setTitle(obj1[i].getTitle());
+            obj.setDate(obj1[i].getDate());
+          // String title=obj.getTitle();
         }
         mrealm.commitTransaction();
+        meditor.putBoolean("dummy",false);
+        meditor.commit();
     }
 
     public void getImages(){
         mnasaAdapter=new NasaAdapter(getdatafromdb(year,month,day),this);
+       // mnasaAdapter.notifyDataSetChanged();
         mrecyclerView.setAdapter(mnasaAdapter);
-        mlayoutManager=new LinearLayoutManager(this);
-        mrecyclerView.setLayoutManager(mlayoutManager);
+        //mlayoutManager=new LinearLayoutManager(this);
+        //mrecyclerView.setLayoutManager(mlayoutManager);
 
     }
 
@@ -241,13 +278,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     Log.d("Inside","inside response");
                 mrealm.beginTransaction();
                 Nasa obj=response.body();
-/*
-                Nasa obj1=new Nasa("asdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-                        "http://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg",
-                        "Dummy data 1","2017-01-25");
-                Nasa obj2= new Nasa("io[[n[[bpihhhhhhhhhhhhhhppppppoooooooooooooooooooooooooooooooooooooooooooooooooooohoih",
-                        "https://s3-us-west-1.amazonaws.com/powr/defaults/image-slider2.jpg",
-                        "Dummy Data 2","2017-01-24");*/
+
+
 
                 Nasa obj3=mrealm.createObject(Nasa.class);
                 obj3.setExplanation(obj.getExplanation());obj3.setHdurl(obj.getHdurl());obj3.setTitle(obj.getTitle());obj3.setDate(obj.getDate());
@@ -291,6 +323,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
+    }
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+
+        return (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting());
     }
 
     @Override
@@ -337,10 +375,10 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             int clicked_year=data.getIntExtra("clicked_year",2017),clicked_month=data.getIntExtra("clicked_month",1),
                     clicked_day=data.getIntExtra("clicked_day",1);
             mnasaAdapter=new NasaAdapter(getdatafromdb(clicked_year,clicked_month,clicked_day),getApplicationContext());
-            mnasaAdapter.notifyDataSetChanged();
+            //mnasaAdapter.notifyDataSetChanged();
             mrecyclerView.setAdapter(mnasaAdapter);
-            mlayoutManager=new LinearLayoutManager(getApplicationContext());
-            mrecyclerView.setLayoutManager(mlayoutManager);
+            //mlayoutManager=new LinearLayoutManager(getApplicationContext());
+          //  mrecyclerView.setLayoutManager(mlayoutManager);
 
         }
     }
@@ -349,8 +387,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         mnasaAdapter=new NasaAdapter(getlistdatafromdb(),this);
         mrecyclerView.setAdapter(mnasaAdapter);
         mnasaAdapter.notifyDataSetChanged();
-        mlayoutManager=new LinearLayoutManager(this);
-        mrecyclerView.setLayoutManager(mlayoutManager);
+       // mrecyclerView.setLayoutManager(mlayoutManager);
     }
 
 

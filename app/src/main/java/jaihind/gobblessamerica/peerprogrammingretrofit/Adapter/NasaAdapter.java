@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class NasaAdapter extends RecyclerView.Adapter<NasaAdapter.ViewHolder> {
 public List<Nasa> list;
     public Context context;
     int i=0;
+
+
 
     public NasaAdapter(List<Nasa> list,Context context) {
         this.list = list;
@@ -45,7 +48,7 @@ public List<Nasa> list;
         holder.mdate_tv.setText(obj.getDate());
        // String url=obj.getHdurl();
         //Picasso.with(context).load(url).resize(300,300).into(holder.mimage_view);
-        Glide.with(context).load(obj.getHdurl()).placeholder(R.drawable.loading).into(holder.mimage_view);
+        Glide.with(context).load(obj.getHdurl()).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().placeholder(R.drawable.loading).error(R.drawable.notfound).into(holder.mimage_view);
         holder.mname_tv.setText(obj.getTitle());
        /* holder.mname_tv.setOnClickListener(new View.OnClickListener() {
             @Override
