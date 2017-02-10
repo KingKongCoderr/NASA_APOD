@@ -27,14 +27,16 @@ CalendarView mcalendarView;
         if (isOnline()) {
             minimum_date=getIntent().getStringExtra("minimum_date");
             maximum_date=getIntent().getStringExtra("maximum_date");
-            SimpleDateFormat format= new SimpleDateFormat("yyyy-mm-dd");
+           // minimum_date=getMonthformated(minimum_date);
+           // maximum_date=getMonthformated(maximum_date);
+            SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
             long milli=0,milli1=0;
             try {
                 Date dt=  format.parse(minimum_date);
                 Date dt1= format.parse(maximum_date);
                 milli= dt.getTime();
                 milli1= dt1.getTime();
-                //System.out.println(milli1);
+                System.out.println(milli1);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -63,6 +65,17 @@ CalendarView mcalendarView;
 
 
     }
+
+    private String getMonthformated(String pdate) {
+        String date="";
+        String split[]=pdate.split("-");
+        date+=split[0]+"-";
+        int month=Integer.parseInt(split[1]);
+        date+=month+"-";
+        date+=split[2];
+        return date;
+    }
+
     public class Calendar implements Serializable{
         int year;
         int month;
