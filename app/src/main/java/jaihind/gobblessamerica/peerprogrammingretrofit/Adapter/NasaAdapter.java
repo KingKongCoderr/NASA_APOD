@@ -38,6 +38,7 @@ public List<Nasa> list;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewitem,parent,false);
+
         return new ViewHolder(v);
     }
 
@@ -46,10 +47,17 @@ public List<Nasa> list;
         final Nasa obj=list.get(position);
 
         holder.mdate_tv.setText(obj.getDate());
-        holder.mcopyright_tv.setText(obj.getCopyright());
+        String copyright="null";
+       // holder.mcopyright_tv.setText("@Copyright:"+obj.getCopyright());
+       if(copyright== String.valueOf(obj.getCopyright())){
+
+        }
+        else {
+           holder.mcopyright_tv.setText("@Copyright:"+obj.getCopyright());
+        }
        // String url=obj.getHdurl();
         //Picasso.with(context).load(url).resize(300,300).into(holder.mimage_view);
-        Glide.with(context).load(obj.getHdurl()).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().placeholder(R.drawable.loading).error(R.drawable.notfound).into(holder.mimage_view);
+        Glide.with(context).load(obj.getHdurl()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().placeholder(R.drawable.loading).error(R.drawable.notfound).into(holder.mimage_view);
         holder.mname_tv.setText(obj.getTitle());
        /* holder.mname_tv.setOnClickListener(new View.OnClickListener() {
             @Override

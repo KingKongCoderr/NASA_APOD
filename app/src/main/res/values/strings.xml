@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">NASA APOD</string>
+    <string name="about">Gives one daily Astronomical image from NASA only if you open the application for that day and stores them in phone, you can later see them by selecting date
+    in the calendar and if you want to see all of them click the list icon.</string>
+    <string name="email_consent">
+        Please note that by submitting your image to APOD, you are consenting for your image to be used on APOD in all of its forms, including mirror sites, foreign language mirror sites, and direct APOD derivative products.
+    </string>
+    <string name="email_consent2">
+        Note for image submissions: The APOD pages are collected annually on a CD-ROM, which is distributed free of charge to educators and the general public. If you would like your image to be considered for an APOD but do not want your image included in this CD-ROM collection, please let us know.
+    </string>
 </resources>

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.PointF;
 import android.net.ConnectivityManager;
 import android.nfc.tech.NfcA;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +16,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import com.squareup.picasso.Picasso;
 
@@ -58,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private NasaAdapter mnasaAdapter;
+    //ZoomControls mzoom_bt;
+   // HorizontalScrollView mhorizontal_sv;
+
 
     public  SharedPreferences.Editor meditor;
 
@@ -80,17 +89,107 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     /*public CupboardNasaSQLiteHelper dbhelper;
     public SQLiteDatabase db;*/
     private Realm mrealm;
-
-
     public List<Nasa> nasa_images;
+/************************PINCH IN ZOOM VARIABLES **************************************/
+    /*View mainView = null;
+    // Remember some things for zooming
+    PointF start = new PointF();
+    PointF mid = new PointF();
+
+    float oldDist = 1f;
+    PointF oldDistPoint = new PointF();
+
+    public static String TAG = "ZOOM";
+
+    static final int NONE = 0;
+    static final int DRAG = 1;
+    static final int ZOOM = 2;
+    int mode = NONE;
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             mrealm.init(getApplicationContext());
+        //mainView=(LinearLayout)findViewById(R.id.mainfragment_container);
             mrealm= Realm.getDefaultInstance();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+           //mhorizontal_sv=(HorizontalScrollView)findViewById(R.id.horizontal_sv);
+
+
+
+        mrecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        final float org_x=mrecyclerView.getScaleX(),org_y=mrecyclerView.getScaleY();
+
+       /* mzoom_bt=(ZoomControls)findViewById(R.id.zoom_bt);
+        mzoom_bt.show();
+            mzoom_bt.setIsZoomOutEnabled(false);
+            final float zoomFactor = 1.5f;
+            mzoom_bt.setOnZoomInClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    float x = mrecyclerView.getScaleX();
+                    float y = mrecyclerView.getScaleY();
+                    if(x>(org_x+5)){
+                        mzoom_bt.setIsZoomInEnabled(false);
+                    }
+                    else {
+                        mrecyclerView.setPivotX(0);
+                        mrecyclerView.setPivotY(0);
+                        mrecyclerView.setScaleX((float) (x + 1));
+                        mrecyclerView.setScaleY((float) (y + 1));
+                        mzoom_bt.setIsZoomOutEnabled(true);
+                    }
+
+                    //zoom(2f, 2f, new PointF(0, 0));
+                }
+            });
+            mzoom_bt.setOnZoomOutClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    float x = mrecyclerView.getScaleX();
+                    float y = mrecyclerView.getScaleY();
+                    if(x>org_x) {
+                        mrecyclerView.setPivotX(0);
+                        mrecyclerView.setPivotY(0);
+                        mrecyclerView.setScaleX((float) (x - 1));
+                        mrecyclerView.setScaleY((float) (y - 1));
+                        mzoom_bt.setIsZoomInEnabled(true);
+                    }else{
+                        mzoom_bt.setIsZoomOutEnabled(false);
+                    }
+
+
+                   // zoom(0.5f, 0.5f, new PointF(0, 0));
+                }
+            });*/
+
+
+
+       /* View v = findViewById(R.id.mainfragment_container); // get reference to root activity view
+        v.setOnClickListener(new View.OnClickListener() {
+            float zoomFactor = 1.5f;
+            boolean zoomedOut = false;
+
+            @Override
+            public void onClick(View v) {
+                if(zoomedOut) {
+                    // now zoom in
+                    v.setScaleX(1);
+                    v.setScaleY(1);
+                    zoomedOut = false;
+                }
+                else {
+                    v.setScaleX(zoomFactor);
+                    v.setScaleY(zoomFactor);
+                    zoomedOut = true;
+                }
+            }
+        });*/
 
             long milli, milli1;
             try {
@@ -125,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                 isInstanceThere = true;
             }
 
-            mrecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             if (mrecyclerView != null) {
                 mrecyclerView.setHasFixedSize(true);
             }
@@ -170,6 +268,43 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
 
     }
+
+ /*   *//**
+     * zooming is done from here
+     *//*
+    public void zoom(Float scaleX, Float scaleY, PointF pivot) {
+        mainView.setPivotX(pivot.x);
+        mainView.setPivotY(pivot.y);
+        mainView.setScaleX(scaleX);
+        mainView.setScaleY(scaleY);
+    }
+
+    *//**
+     * space between the first two fingers
+     *//*
+    private float spacing(MotionEvent event) {
+        // ...
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float)Math.sqrt(x * x + y * y);
+    }
+
+    private PointF spacingPoint(MotionEvent event) {
+        PointF f = new PointF();
+        f.x = event.getX(0) - event.getX(1);
+        f.y = event.getY(0) - event.getY(1);
+        return f;
+    }
+
+    *//**
+     * the mid point of the first two fingers
+     *//*
+    private void midPoint(PointF point, MotionEvent event) {
+        // ...
+        float x = event.getX(0) + event.getX(1);
+        float y = event.getY(0) + event.getY(1);
+        point.set(x / 2, y / 2);
+    }*/
 
     /*private void crud() {
         mrealm.beginTransaction();
@@ -299,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
 
 
-
             }
             else{
 
@@ -343,8 +477,22 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         switch (id){
             case R.id.date_selection:callDateFrag();break;
             case R.id.list_selection:callListFrag();break;
+            case R.id.submit_apod:callPhotoActivity();break;
+            case R.id.about:showaboutdialog();break;
         }
         return true;
+    }
+
+    private void callPhotoActivity(){
+        Intent photo_intent=new Intent(this,PhotoActivity.class);
+        startActivity(photo_intent);
+
+    }
+    private void showaboutdialog() {
+
+        FragmentManager frag_manager=getSupportFragmentManager();
+        AboutDialog dialog_frag=new AboutDialog();
+        dialog_frag.show(frag_manager,"About dialog");
     }
 
     private void callDateFrag() {

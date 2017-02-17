@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
@@ -60,7 +61,8 @@ CalendarView mcalendarView;
             });
         }
         else {
-            mtv.setText("No internet click the list button in the main menu to retreive any stored information");
+            mcalendarView.setVisibility(View.INVISIBLE);
+            mtv.setText("Unable to load information; check your internet to load todays image or click the list button in the main menu to retreive any stored information");
         }
 
 

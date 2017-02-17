@@ -13,4 +13,14 @@
         android:id="@+id/list_selection"
         android:title=""
         app:showAsAction="always"/>
+    <item
+        android:icon="@drawable/camera"
+        android:id="@+id/submit_apod"
+        android:title=""
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/about"
+        android:title="About"
+        app:showAsAction="never"
+        />
 </menu>
