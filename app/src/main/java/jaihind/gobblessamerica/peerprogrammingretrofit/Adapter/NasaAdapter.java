@@ -1,9 +1,12 @@
 package jaihind.gobblessamerica.peerprogrammingretrofit.Adapter;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +31,11 @@ public List<Nasa> list;
     public Context context;
     int i=0;
 
+    public ViewHolder holder;
+
+    public ScaleGestureDetector scalegestdetector;
+    public Matrix matrix=new Matrix();
+
 
 
     public NasaAdapter(List<Nasa> list,Context context) {
@@ -38,8 +46,28 @@ public List<Nasa> list;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewitem,parent,false);
-
+        scalegestdetector=new ScaleGestureDetector(context,new ScaleListener());
         return new ViewHolder(v);
+    }
+
+    public boolean onTouchEvent(MotionEvent ev) {
+        scalegestdetector.onTouchEvent(ev);
+        return true;
+    }
+
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+
+            float ScaleFactor=detector.getScaleFactor();
+            ScaleFactor = Math.max(0.1f, Math.min(ScaleFactor, 5.0f));
+            matrix.setScale(ScaleFactor, ScaleFactor);
+            holder.mimage_view.setImageMatrix(matrix);
+
+            return true;
+
+        }
     }
 
     @Override
@@ -77,6 +105,7 @@ public List<Nasa> list;
 
             }
         });
+
 
     }
 

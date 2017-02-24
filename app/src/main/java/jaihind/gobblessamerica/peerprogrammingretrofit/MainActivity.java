@@ -1,13 +1,11 @@
 package jaihind.gobblessamerica.peerprogrammingretrofit;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.PointF;
 import android.net.ConnectivityManager;
-import android.nfc.tech.NfcA;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,22 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomControls;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
@@ -42,20 +26,16 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Adapter.NasaAdapter;
-import jaihind.gobblessamerica.peerprogrammingretrofit.Database.CupboardNasaSQLiteHelper;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Model.Nasa;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Network.NetworkManager;
-import jaihind.gobblessamerica.peerprogrammingretrofit.Network.services.NasaService;
 
+import jaihind.gobblessamerica.peerprogrammingretrofit.Service.AlertService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
@@ -82,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public int min_date=0;
     public boolean isInstanceThere=false,shouldFetch=true;
     //shouldDummy=true;
+
+
 
 
 
@@ -122,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         mrecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         final float org_x=mrecyclerView.getScaleX(),org_y=mrecyclerView.getScaleY();
+
+
 
        /* mzoom_bt=(ZoomControls)findViewById(R.id.zoom_bt);
         mzoom_bt.show();
@@ -268,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
 
     }
+
 
  /*   *//**
      * zooming is done from here
@@ -432,6 +417,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                // getImages();
                 callListFrag();
 
+                setNotification(obj.getTitle());
+
 
 
             }
@@ -442,10 +429,11 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         }
 
         @Override
-        public void onFailure(Call<Nasa> call, Throwable t) {
+        public void onFailure(Call<Nasa> call, Throwable t)
+        {
 
-            if(t instanceof UnknownHostException){
-
+            if(t instanceof UnknownHostException)
+            {
                 Log.e("On Failure","No network"+t.getMessage());
             }else{
                 if(t instanceof SocketTimeoutException){
@@ -483,6 +471,20 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         return true;
     }
 
+    private void setNotification(String message){
+        Calendar calendar= Calendar.getInstance();
+        long trigger_time=calendar.getTimeInMillis()+(24*60)*60000;
+       // long interval_time=calendar.getTimeInMillis()+15*1000;
+
+
+        Intent notifictrigger_intent=new Intent(this, AlertService.class);
+        notifictrigger_intent.putExtra("message",message);
+        PendingIntent pendingIntent= PendingIntent.getBroadcast(this,1,notifictrigger_intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,trigger_time,AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+    }
     private void callPhotoActivity(){
         Intent photo_intent=new Intent(this,PhotoActivity.class);
         startActivity(photo_intent);

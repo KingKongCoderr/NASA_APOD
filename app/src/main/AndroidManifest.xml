@@ -32,6 +32,7 @@
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".PhotoActivity"
             android:parentActivityName=".MainActivity"></activity>
+        <receiver android:name=".Service.AlertService"/>
     </application>
 
 </manifest>
