@@ -57,8 +57,8 @@ public class AlertService extends BroadcastReceiver implements Callback<Nasa>{
         if (response.isSuccessful()) {
             Log.d("Inside", "inside notification response");
             mrealm.beginTransaction();
-            Nasa obj = response.body();
-            todays_title=obj.getTitle();
+            Nasa alert_obj = response.body();
+            todays_title=alert_obj.getTitle();
             mrealm.commitTransaction();
 
             Intent notification_intent=new Intent(mcontext, MainActivity.class);

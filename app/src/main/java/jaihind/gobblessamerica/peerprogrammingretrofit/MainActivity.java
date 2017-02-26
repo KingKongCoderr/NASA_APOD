@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public int todays_date=0;
     public int stored_date=0;
     public int min_date=0;
-    public boolean isInstanceThere=false,shouldFetch=true;
+    public boolean isInstanceThere=false,shouldFetch=true,isNotificationset=false;
     //shouldDummy=true;
 
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             meditor = msharedPreferences.edit();
             meditor.putLong("mindate", System.currentTimeMillis());
 
-
+            isNotificationset= msharedPreferences.getBoolean("isnotificationset",false);
             // meditor.commit();
             Log.d("time", msharedPreferences.getLong("mindate", (long) 0) + "");
             mNetworkManager = new NetworkManager();
@@ -329,6 +329,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public List<Nasa> getdatafromdb(int lyear,int lmonth,int lday){
 
         List<Nasa> teams_list = new ArrayList<Nasa>();
+        List<Nasa> single_list= new ArrayList<Nasa>();
         mrealm.beginTransaction();
         RealmResults<Nasa> itr=mrealm.where(Nasa.class).findAll();
         try {
@@ -349,6 +350,11 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if(teams_list.size()>0){
+                for(int i=teams_list.size()-1;i>0;i--){
+                 teams_list.remove(i);}
+            }
+
             mrealm.commitTransaction();
         }
         return teams_list;
@@ -369,7 +375,13 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         try {
         for (Nasa nasa : itr) {
         Log.d("inside list for",""+nasa.getTitle());
-        teams_list.add(new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright()));
+            Nasa add_object=new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright());
+            if(teams_list.contains(add_object)){
+
+            }else{
+                teams_list.add(add_object);
+            }
+
         }
         } catch (Exception e) {
         e.printStackTrace();
@@ -399,10 +411,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     Log.d("Inside","inside response");
                 mrealm.beginTransaction();
                 Nasa obj=response.body();
-
-
-
                 Nasa obj3=mrealm.createObject(Nasa.class);
+
                 obj3.setExplanation(obj.getExplanation());
                 obj3.setHdurl(obj.getHdurl());
                 obj3.setTitle(obj.getTitle());
@@ -417,7 +427,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
                // getImages();
                 callListFrag();
 
-                setNotification(obj.getTitle());
+                if(!(isNotificationset)) {
+                    setNotification(obj.getTitle());
+                }
 
 
 
@@ -473,17 +485,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
     private void setNotification(String message){
         Calendar calendar= Calendar.getInstance();
-        long trigger_time=calendar.getTimeInMillis()+(24*60)*60000;
-       // long interval_time=calendar.getTimeInMillis()+15*1000;
-
-
+        // long trigger_time=calendar.getTimeInMillis()+(24*60)*60000;
+        long trigger_time=calendar.getTimeInMillis()+15*1000;
         Intent notifictrigger_intent=new Intent(this, AlertService.class);
         notifictrigger_intent.putExtra("message",message);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this,1,notifictrigger_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,trigger_time,AlarmManager.INTERVAL_DAY,pendingIntent);
-
-
+        meditor.putBoolean("isnotificationset",true);
+        meditor.commit();
     }
     private void callPhotoActivity(){
         Intent photo_intent=new Intent(this,PhotoActivity.class);
