@@ -13,7 +13,6 @@ public class Nasa extends RealmObject{
     //public long _id;//For cupboard
 
     private String copyright;
-    @Index
     private String date;
     private String explanation;
     private String hdurl;

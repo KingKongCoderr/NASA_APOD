@@ -38,7 +38,7 @@ public class BootService extends BroadcastReceiver {
         notificationManager.notify(2,noti.build());*/
         mcontext=context;
         setNotification("rebooted");
-        
+
 
 
         }
