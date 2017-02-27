@@ -29,10 +29,11 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Adapter.NasaAdapter;
+import jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService.BootService;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Model.Nasa;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Network.NetworkManager;
 
-import jaihind.gobblessamerica.peerprogrammingretrofit.Service.AlertService;
+import jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService.AlertService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -350,11 +351,10 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(teams_list.size()>0){
+           /* if(teams_list.size()>0){
                 for(int i=teams_list.size()-1;i>0;i--){
                  teams_list.remove(i);}
-            }
-
+            }*/
             mrealm.commitTransaction();
         }
         return teams_list;
@@ -365,8 +365,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         List<Nasa> teams_list = new ArrayList<Nasa>();
         mrealm.beginTransaction();
         //RealmResults<Nasa> itr=mrealm.where(Nasa.class).findAll();
-        RealmResults<Nasa> itr= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);
-
+        RealmResults<Nasa> itr= mrealm.where(Nasa.class).findAllSorted("date", Sort.DESCENDING);//.distinct("date");
 
         maximum_date=itr.get(0).getDate();
         minimum_date=itr.get(itr.size()-1).getDate();
@@ -374,13 +373,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
 
         try {
         for (Nasa nasa : itr) {
+            String date= nasa.getDate();
         Log.d("inside list for",""+nasa.getTitle());
             Nasa add_object=new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright());
-            if(teams_list.contains(add_object)){
 
-            }else{
                 teams_list.add(add_object);
-            }
+
 
         }
         } catch (Exception e) {
@@ -492,8 +490,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this,1,notifictrigger_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,trigger_time,AlarmManager.INTERVAL_DAY,pendingIntent);
-        meditor.putBoolean("isnotificationset",true);
-        meditor.commit();
+       /* meditor.putBoolean("isnotificationset",true);
+        meditor.commit();*/
     }
     private void callPhotoActivity(){
         Intent photo_intent=new Intent(this,PhotoActivity.class);
@@ -562,5 +560,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         super.onDestroy();
         mrealm.close();
     }
+
+
 }
 

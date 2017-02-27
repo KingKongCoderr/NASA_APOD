@@ -2,6 +2,7 @@ package jaihind.gobblessamerica.peerprogrammingretrofit.Model;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.Index;
 
 /**
  * Created by nande on 1/23/2017.
@@ -12,6 +13,7 @@ public class Nasa extends RealmObject{
     //public long _id;//For cupboard
 
     private String copyright;
+    @Index
     private String date;
     private String explanation;
     private String hdurl;

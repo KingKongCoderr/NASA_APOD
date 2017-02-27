@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+    <!--bootservice permission.-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/appicon"
@@ -32,7 +35,12 @@
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".PhotoActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <receiver android:name=".Service.AlertService"/>
+        <receiver android:name=".BroadcastService.AlertService"/>
+        <receiver android:name=".BroadcastService.BootService" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            </receiver>
     </application>
 
 </manifest>

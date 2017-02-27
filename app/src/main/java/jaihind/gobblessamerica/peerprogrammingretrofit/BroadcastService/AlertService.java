@@ -1,22 +1,18 @@
-package jaihind.gobblessamerica.peerprogrammingretrofit.Service;
+package jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Calendar;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 import jaihind.gobblessamerica.peerprogrammingretrofit.MainActivity;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Model.Nasa;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Network.NetworkManager;
