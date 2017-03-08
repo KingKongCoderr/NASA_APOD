@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -62,7 +63,10 @@ public class PhotoActivity extends AppCompatActivity {
                        /* Uri photoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(),
                                 "com.example.android.fileprovider",
                                 photoFile);*/
-                        Uri photoURI = Uri.fromFile(photoFile);
+                      //  Uri photoURI = Uri.fromFile(photoFile);
+                        Uri photoURI= FileProvider.getUriForFile(getBaseContext(),getApplicationContext().getPackageName()+".provider",
+                                createImageFile());
+                        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, 123);
                     }

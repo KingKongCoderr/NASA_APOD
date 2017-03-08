@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="Nasa_images" path="Android/data/jaihind.gobblessamerica.dialogue/files/NasaApod" />
+    <external-path name="NASA APOD" path="Pictures/NASA APOD"/>
+    <!--Failed to find configured root that contains /storage/emulated/0/Pictures/NASA APOD/JPEG_20170307_105323_673375809.jpg-->
+    <!--path="Android/data/jaihind.gobblessamerica.peerprogrammingretrofit/files/NASA APOD" />-->
 </paths>

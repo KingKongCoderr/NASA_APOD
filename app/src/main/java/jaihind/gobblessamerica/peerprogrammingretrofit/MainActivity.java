@@ -191,8 +191,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             msharedPreferences = getPreferences(Context.MODE_PRIVATE);
             meditor = msharedPreferences.edit();
             meditor.putLong("mindate", System.currentTimeMillis());
-
-            isNotificationset= msharedPreferences.getBoolean("isnotificationset",false);
+         isNotificationset= msharedPreferences.getBoolean("isnotificationset",false);
             // meditor.commit();
             Log.d("time", msharedPreferences.getLong("mindate", (long) 0) + "");
             mNetworkManager = new NetworkManager();
@@ -330,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     public List<Nasa> getdatafromdb(int lyear,int lmonth,int lday){
 
         List<Nasa> teams_list = new ArrayList<Nasa>();
-        List<Nasa> single_list= new ArrayList<Nasa>();
         mrealm.beginTransaction();
         RealmResults<Nasa> itr=mrealm.where(Nasa.class).findAll();
         try {
@@ -376,25 +374,21 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
             String date= nasa.getDate();
         Log.d("inside list for",""+nasa.getTitle());
             Nasa add_object=new Nasa(nasa.getExplanation(),nasa.getHdurl(),nasa.getTitle(),nasa.getDate(),nasa.getCopyright());
-
                 teams_list.add(add_object);
-
-
         }
         } catch (Exception e) {
         e.printStackTrace();
         } finally {
-
         mrealm.commitTransaction();
-
         }
-
-
-
-
         return teams_list;
-
     }
+/*
+    public List<Nasa> getdatedatafromdb(int lyear,int lmonth,int lday){
+        List<Nasa> single_list= new ArrayList<Nasa>();
+
+    }*/
+
   private void fetchData() {
      Call<Nasa> apiCall= mNetworkManager.getNasaService().gettodayPicture("IhPSRcqHVZ0WDgWwGAUrUOTGSBTz2fCiN8Pd3dwc");
         apiCall.enqueue(this);
