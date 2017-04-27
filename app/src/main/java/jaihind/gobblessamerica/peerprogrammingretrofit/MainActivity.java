@@ -542,10 +542,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     }
 
     private void callListFrag() {
-        mnasaAdapter=new NasaAdapter(getlistdatafromdb(),this);
-        mrecyclerView.setAdapter(mnasaAdapter);
-        mnasaAdapter.notifyDataSetChanged();
-       // mrecyclerView.setLayoutManager(mlayoutManager);
+        if(isDataEmpty()==false) {
+            mnasaAdapter = new NasaAdapter(getlistdatafromdb(), this);
+            mrecyclerView.setAdapter(mnasaAdapter);
+            mnasaAdapter.notifyDataSetChanged();
+            // mrecyclerView.setLayoutManager(mlayoutManager);
+        }
+        else{
+            Toast.makeText(this, "No Saved Data", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -553,6 +558,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
     protected void onDestroy() {
         super.onDestroy();
         mrealm.close();
+    }
+
+    public boolean isDataEmpty(){
+        if(mrealm.isEmpty()){
+            return true;
+        }
+        else
+            return false;
     }
 
 

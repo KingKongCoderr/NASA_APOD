@@ -8,4 +8,5 @@
     <string name="email_consent2">
         Note for image submissions: The APOD pages are collected annually on a CD-ROM, which is distributed free of charge to educators and the general public. If you would like your image to be considered for an APOD but do not want your image included in this CD-ROM collection, please let us know.
     </string>
+    <string name="description_button">DESCRIPTION</string>
 </resources>

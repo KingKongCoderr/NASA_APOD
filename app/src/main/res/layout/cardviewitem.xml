@@ -18,7 +18,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
             <ImageView
 
                 android:layout_width="match_parent"
@@ -31,27 +33,49 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/copyright_tv"
+                android:id="@+id/card_tv"
                 android:padding="4dp"
-                android:layout_below="@id/card_iv"
-                android:layout_alignParentLeft="true"
-                />
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/card_iv"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/date_tv"
                 android:padding="4dp"
-                android:layout_below="@id/card_iv"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/card_tv"
                  />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/copyright_tv"
+                android:padding="4dp"
+                android:layout_below="@id/date_tv"
+                android:layout_centerHorizontal="true"
+                />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_bt"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/copyright_tv"
+                android:text="@string/description_button"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_tv"
-                android:padding="4dp"
-                android:layout_below="@id/date_tv"/>
+                android:id="@+id/description_tv"
+                android:layout_below="@id/card_bt"
+                android:padding="6dp"
+                android:gravity="center"
+                />
+
+
+
+
+
 
 
         </RelativeLayout>

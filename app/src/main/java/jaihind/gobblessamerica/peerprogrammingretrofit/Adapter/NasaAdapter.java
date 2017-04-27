@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,16 +94,31 @@ public List<Nasa> list;
                 holder.mname_tv.setText(obj.getExplanation());
             }
         });*/
-        holder.mimage_view.setOnClickListener(new View.OnClickListener() {
+    /*    holder.mimage_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(i%2==0)
+                if(i%2==0){
+
                     holder.mname_tv.setText(obj.getExplanation());
+
+                }
                 else
                     holder.mname_tv.setText(obj.getTitle());
                 i++;
 
+            }
+        });*/
+
+        holder.mcard_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(i%2==0){
+                holder.mdescription_tv.setText(obj.getExplanation());}
+                else{
+                    holder.mdescription_tv.setText("");
+                }
+                i++;
             }
         });
 
@@ -115,11 +131,14 @@ public List<Nasa> list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView mdate_tv,mname_tv,mcopyright_tv;
+        private TextView mdate_tv,mname_tv,mcopyright_tv,mdescription_tv;
         private ImageView mimage_view;
+        private Button mcard_bt;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mdescription_tv=(TextView)itemView.findViewById(R.id.description_tv);
+            mcard_bt=(Button)itemView.findViewById(R.id.card_bt);
             mdate_tv = (TextView)itemView.findViewById(R.id.date_tv);
             mname_tv = (TextView)itemView.findViewById(R.id.card_tv);
             mimage_view = (ImageView)itemView.findViewById(R.id.card_iv);
