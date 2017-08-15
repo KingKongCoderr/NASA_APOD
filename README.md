@@ -16,7 +16,7 @@ Constraints used for application:
 4.Should be able to click the image to show more info and click image again to hide information.
 
 
-![alt text](https://user-images.githubusercontent.com/10462780/29320902-5d16746e-819e-11e7-8c95-c840eb91e491.png)
+![alt text](https://user-images.githubusercontent.com/10462780/29320902-5d16746e-819e-11e7-8c95-c840eb91e491.gif)
 
 
 https://user-images.githubusercontent.com/10462780/29320919-67e89a34-819e-11e7-8b19-e723a5b8b502.png
