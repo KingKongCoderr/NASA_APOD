@@ -33,6 +33,4 @@ Capture Image from within this application which is saved to gallery:
 Submit the image to NASA moderators through email with moderators email address provided by the application.
 
 ![alt text](https://user-images.githubusercontent.com/10462780/29322459-2c1c548c-81a3-11e7-8c48-643e6304a04e.gif)
-
-
 ![alt text](https://user-images.githubusercontent.com/10462780/29322467-3437a9d2-81a3-11e7-960f-a09481c0caae.gif)
