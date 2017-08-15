@@ -1,6 +1,6 @@
 Android application that retrieves images from NASA Sources daily which is called APOD(Astronomical picture of the Day)
-
-Components used in this application:
+------------------------------------
+# Components used in this application:
 Recycler View
 Card View
 Glide image Library for inserting images into Recycler-Card View.
@@ -9,13 +9,15 @@ Realm for database
 CalendarView
 Explicit Intents(onActivityforResult)
 
-Constraints used for application:
+------------------------------------
+# Constraints used for application:
 1.Should make only 1 API call for the day
 2.Information should be stored so that user can retreive particular days info by selecting date on CalendarView
 3.List button should give all the information presented in database in decreasing order of Date.
 4.Should be able to click the image to show more info and click image again to hide information.
 
-All the NASA APOD images in a list:
+------------------------------------
+# All the NASA APOD images in a list:
 
 ![alt text](https://user-images.githubusercontent.com/10462780/29322336-c9ae5f02-81a2-11e7-9306-7ab748680abf.gif)
 
