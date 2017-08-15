@@ -15,14 +15,12 @@ Constraints used for application:
 3.List button should give all the information presented in database in decreasing order of Date.
 4.Should be able to click the image to show more info and click image again to hide information.
 
+![alt text] (https://user-images.githubusercontent.com/10462780/29322336-c9ae5f02-81a2-11e7-9306-7ab748680abf.gif)
 
-![alt text](https://user-images.githubusercontent.com/10462780/29320902-5d16746e-819e-11e7-8c95-c840eb91e491.gif)
+![alt text] (https://user-images.githubusercontent.com/10462780/29322422-0b5daaac-81a3-11e7-8095-319e2719b753.gif)
 
+![alt text] (https://user-images.githubusercontent.com/10462780/29322437-18499384-81a3-11e7-9f85-af1ffd1a554c.gif)
 
-https://user-images.githubusercontent.com/10462780/29320919-67e89a34-819e-11e7-8b19-e723a5b8b502.png
+![alt text] (https://user-images.githubusercontent.com/10462780/29322459-2c1c548c-81a3-11e7-8c48-643e6304a04e.gif)
 
-https://user-images.githubusercontent.com/10462780/29320931-721f0a56-819e-11e7-9400-5045bb0918e8.png
-
-https://user-images.githubusercontent.com/10462780/29320941-76ca3e54-819e-11e7-9373-5c1f83036e91.png
-
-https://user-images.githubusercontent.com/10462780/29320945-7bddfcc8-819e-11e7-913c-95052ed88e17.png
+![alt text] (https://user-images.githubusercontent.com/10462780/29322467-3437a9d2-81a3-11e7-960f-a09481c0caae.gif)
