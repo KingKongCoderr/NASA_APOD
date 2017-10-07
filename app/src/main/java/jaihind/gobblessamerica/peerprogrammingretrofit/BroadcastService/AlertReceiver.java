@@ -25,7 +25,7 @@ import retrofit2.Response;
  * Created by nande on 2/21/2017.
  */
 
-public class AlertService extends BroadcastReceiver implements Callback<Nasa>{
+public class AlertReceiver extends BroadcastReceiver implements Callback<Nasa>{
 
     private NetworkManager networkManager;
     Realm mrealm;
@@ -45,7 +45,6 @@ public class AlertService extends BroadcastReceiver implements Callback<Nasa>{
     private void fetchData() {
         Call<Nasa> apiCall= networkManager.getNasaService().gettodayPicture("IhPSRcqHVZ0WDgWwGAUrUOTGSBTz2fCiN8Pd3dwc");
         apiCall.enqueue(this);
-
     }
 
     @Override

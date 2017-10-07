@@ -44,7 +44,7 @@
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".PhotoActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <receiver android:name=".BroadcastService.AlertService"/>
+        <receiver android:name=".BroadcastService.AlertReceiver"/>
         <receiver android:name=".BroadcastService.BootService" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

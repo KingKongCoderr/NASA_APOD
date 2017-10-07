@@ -1,18 +1,13 @@
 package jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Calendar;
-
-import jaihind.gobblessamerica.peerprogrammingretrofit.R;
 
 /**
  * Created by nande on 2/26/2017.
@@ -46,7 +41,7 @@ public class BootService extends BroadcastReceiver {
         Calendar calendar= Calendar.getInstance();
         // long trigger_time=calendar.getTimeInMillis()+(24*60)*60000;
         long trigger_time=calendar.getTimeInMillis()+15*1000;
-        Intent notifictrigger_intent=new Intent(mcontext, AlertService.class);
+        Intent notifictrigger_intent=new Intent(mcontext, AlertReceiver.class);
         notifictrigger_intent.putExtra("message",message);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(mcontext,1,notifictrigger_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager=(AlarmManager)mcontext.getSystemService(Context.ALARM_SERVICE);

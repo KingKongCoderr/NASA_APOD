@@ -29,11 +29,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Adapter.NasaAdapter;
-import jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService.BootService;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Model.Nasa;
 import jaihind.gobblessamerica.peerprogrammingretrofit.Network.NetworkManager;
 
-import jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService.AlertService;
+import jaihind.gobblessamerica.peerprogrammingretrofit.BroadcastService.AlertReceiver;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -479,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Nasa> {
         Calendar calendar= Calendar.getInstance();
         // long trigger_time=calendar.getTimeInMillis()+(24*60)*60000;
         long trigger_time=calendar.getTimeInMillis()+15*1000;
-        Intent notifictrigger_intent=new Intent(this, AlertService.class);
+        Intent notifictrigger_intent=new Intent(this, AlertReceiver.class);
         notifictrigger_intent.putExtra("message",message);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this,1,notifictrigger_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
