@@ -6,7 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.NotificationCompat;
+import androidx.appcompat.app.NotificationCompat;
 import android.util.Log;
 
 import java.net.SocketTimeoutException;

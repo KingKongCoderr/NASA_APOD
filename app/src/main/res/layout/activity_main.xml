@@ -14,12 +14,12 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             tools:context="jaihind.gobblessamerica.peerprogrammingretrofit.MainActivity">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
             android:layout_weight="100">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
             <!--<ZoomControls
                 android:layout_width="wrap_content"
