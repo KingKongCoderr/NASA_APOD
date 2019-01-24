@@ -23,6 +23,11 @@ android {
 
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 kapt {
@@ -73,23 +78,24 @@ dependencies {
 
     //Testing dependencies
     testImplementation 'junit:junit:4.12'
-
-    // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
-
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
+
     // required if you want to use Mockito for Android instrumentation tests
     androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
 
-    // Android JUnit Runner
+    // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+
     androidTestImplementation 'androidx.test:core:1.1.0'
-    androidTestImplementation('androidx.test:runner:1.1.0') {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
+
 
     // JUnit4 Rules
     androidTestImplementation('androidx.test:rules:1.1.0') {
