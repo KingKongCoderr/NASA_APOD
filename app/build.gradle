@@ -1,7 +1,6 @@
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'realm-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 
@@ -28,6 +27,12 @@ android {
         enabled = true
     }
 
+    //Add the following configuration in order to target Java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 kapt {
@@ -40,8 +45,9 @@ kapt {
 
 ext{
     room_version = "2.1.0-alpha03"
-    daggerVersion = "2.21"
+    daggerVersion = "2.11"
     work_version = "1.0.0-beta03"
+    mockitoVersion = "2.18.3"
 }
 
 dependencies {
@@ -55,7 +61,9 @@ dependencies {
 
 
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
+
+    //rxjava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
@@ -113,11 +121,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation 'com.github.tmurakami:dexopener:1.0.5'
+    //androidTestImplementation 'com.github.tmurakami:dexopener:1.0.5'
 
 
 }
 repositories {
-    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+    google()
+    jcenter()
 }
 
