@@ -1,16 +1,16 @@
 package jaihind.gobblessamerica.peerprogrammingretrofit.Model;
 
+import androidx.room.Entity;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 
 /**
- * Created by nande on 1/23/2017.
+ * Created by nandeeesh on 1/23/2017.
+ * modified by nandeesh on 2/3/2019.
  */
-
-public class Nasa extends RealmObject{
-
-    //public long _id;//For cupboard
+@Entity
+public class Nasa{
 
     private String copyright;
     private String date;
@@ -22,8 +22,8 @@ public class Nasa extends RealmObject{
     private String url;
 
     public Nasa(){
-
     }
+
     public Nasa(String explanation, String hdurl, String title,String date,String copyright) {
         this.explanation = explanation;
         this.hdurl = hdurl;

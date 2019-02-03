@@ -24,7 +24,6 @@ public class NetworkManager {
 
 
     public NasaService getNasaService(){
-
         return mNasaService;
     }
 
